@@ -7,8 +7,8 @@ import Handlebars from "handlebars";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-import { accountsController } from "./controllers/accounts-controller.js";
-import { webRoutes } from "./web-routes.js";
+import { accountsController } from "./controllers/accounts_controller.js";
+import { webRoutes } from "./web_routes.js";
 import { db } from "./models/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,9 +36,9 @@ async function init() {
       hbs: Handlebars,
     },
     relativeTo: __dirname,
-    path: "./pages",
-    layoutPath: "./pages",
-    partialsPath: "./pages/components",
+    path: "./views",
+    layoutPath: "./views/layout",
+    partialsPath: "./views/partials",
     layout: true,
     isCached: false,
   });
