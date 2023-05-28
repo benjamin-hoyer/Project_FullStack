@@ -1,10 +1,12 @@
 import { assert } from "chai";
 import { db } from "../../src/models/db.js";
 import { darth, testUsers } from "../fixtures.js";
+import { assertSubset } from "../test_utils.js";
 
 suite("User Model Test", () => {
   setup(async () => {
-    db.init();
+    db.init("mongo");
+
     await db.userStore.deleteAllUsers();
 
     for (let i = 0; i < testUsers.length; i += 1) {
@@ -19,7 +21,7 @@ suite("User Model Test", () => {
 
   test("add one user", async () => {
     const newUser = await db.userStore.addUser(darth);
-    assert.deepEqual(darth, newUser);
+    assertSubset(darth, newUser);
   });
 
   test("get one user by id and email", async () => {
@@ -49,7 +51,7 @@ suite("User Model Test", () => {
   test("bad params", async () => {
     let nullUser;
     /* ******* email ******** */
-    nullUser = await db.userStore.getUserById("");
+    nullUser = await db.userStore.getUserByEmail("");
     assert.isNull(nullUser);
 
     /* ******* Id ******** */
@@ -57,8 +59,10 @@ suite("User Model Test", () => {
       nullUser = await db.userStore.getUserById("");
       assert.fail("getUserById should have thrown an error");
     } catch (err) {
-      console.log(err.message);
-      assert.equal(err.message, "id must be a non-empty string");
+      assert.equal(
+        err.message,
+        'Cast to ObjectId failed for value "" (type string) at path "_id" for model "User"'
+      );
     }
     /* ****  Id 2  ***** */
     nullUser = await db.userStore.getUserById();

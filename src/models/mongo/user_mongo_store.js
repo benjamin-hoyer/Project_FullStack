@@ -11,6 +11,7 @@ export const userMongoStore = {
 
   async addUser(user) {
     const newUser = new User(user);
+
     const userObj = await newUser.save();
     return this.getUserById(userObj._id);
   },

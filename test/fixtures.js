@@ -20,7 +20,7 @@ export const testUsers = [
   {
     firstName: "Darth",
     lastName: "Vader",
-    email: "darth@vader.com",
+    email: "darthi@vader.com",
     password: "password",
   },
   {

@@ -12,6 +12,8 @@ export const db = {
         break;
       default:
         this.userStore = userMongoStore;
+        connectMongo();
+        break;
     }
   },
 };
