@@ -1,25 +1,24 @@
 import { db } from "../models/db.js";
+import { UserCredentialsSpec, UserSpec } from "../models/joi_schemas.js";
 
 export const accountsController = {
-  //show index
   index: {
     auth: false,
     handler: function (request, h) {
       return h.view("main", { title: "Welcome to Hiking" });
     },
   },
-  //show signup
   showSignup: {
     auth: false,
     handler: function (request, h) {
       return h.view("signup-view", { title: "Sign up for Storing your Hikes" });
     },
   },
-  //Signup
+
   signup: {
     auth: false,
     validate: {
-      //payload: UserSpec,
+      payload: UserSpec,
       options: { abortEarly: false },
       failAction: function (request, h, error) {
         return h
@@ -48,18 +47,16 @@ export const accountsController = {
       return h.redirect("/");
     },
   },
-  //Show Login
   showLogin: {
     auth: false,
     handler: function (request, h) {
-      return h.view("login_view", { title: "Login to Playlist" });
+      return h.view("login_view", { title: "Login to Hikes" });
     },
   },
-  //Login
   login: {
     auth: false,
     validate: {
-      //payload: UserCredentialsSpec,
+      payload: UserCredentialsSpec,
       options: { abortEarly: false },
       failAction: function (request, h, error) {
         return h
@@ -78,14 +75,12 @@ export const accountsController = {
       return h.redirect("/dashboard");
     },
   },
-  //Logout
   logout: {
     handler: function (request, h) {
       request.cookieAuth.clear();
       return h.redirect("/");
     },
   },
-  //Validation
   async validate(request, session) {
     try {
       const user = await db.userStore.getUserById(session.id);

@@ -8,8 +8,8 @@ export const adminController = {
     }
   },
 
-  //show admin view
   showAdmin: {
+    validate: {},
     handler: async function (request, h) {
       const user = request.auth.credentials;
       if (user.role !== "admin") {
@@ -22,7 +22,7 @@ export const adminController = {
       });
     },
   },
-  //delete user
+
   deleteUser: {
     handler: async function (request, h) {
       const user = request.auth.credentials;
@@ -34,7 +34,7 @@ export const adminController = {
       return h.redirect("/admin");
     },
   },
-  //add user
+
   addUser: {
     handler: async function (request, h) {
       const user = request.auth.credentials;

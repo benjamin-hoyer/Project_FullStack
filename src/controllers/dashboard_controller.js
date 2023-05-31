@@ -1,4 +1,5 @@
 import { db } from "../models/db.js";
+import { CategorySpec } from "../models/joi_schemas.js";
 
 export const dashboardController = {
   index: {
@@ -17,6 +18,10 @@ export const dashboardController = {
   },
 
   addCategory: {
+    validate: {
+      payload: CategorySpec,
+      options: { abortEarly: false },
+    },
     handler: async function (request, h) {
       const loggedInUser = request.auth.credentials;
       const newCategory = {
