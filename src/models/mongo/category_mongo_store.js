@@ -10,6 +10,7 @@ export const categoryMongoStore = {
     const categoryObj = await newCategory.save();
     return this.getCategoryById(categoryObj._id);
   },
+
   async getCategoryById(id) {
     const category = (await Category.findOne({ _id: id }).lean()) || null;
     if (category) {
@@ -23,10 +24,9 @@ export const categoryMongoStore = {
     return Category.find({ userid: id }).lean() || null;
   },
 
-  async updateCategory(category, updateCategory) {
-    const categoryDoc = await Category.findOne({ _id: category._id });
+  async updateCategoryById(id, updateCategory) {
+    const categoryDoc = await Category.findOne({ _id: id });
     categoryDoc.name = updateCategory.name;
-
     await categoryDoc.save();
   },
 

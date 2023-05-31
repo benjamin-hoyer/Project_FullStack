@@ -18,7 +18,7 @@ export const hikeMongoStore = {
     return Hike.find({ categoryid: id }).lean() || null;
   },
 
-  async deleteHike(id) {
+  async deleteHikeById(id) {
     await Hike.deleteOne({ _id: id });
   },
 
@@ -26,8 +26,8 @@ export const hikeMongoStore = {
     await Hike.deleteMany({});
   },
 
-  async updateHike(hike, updatetHike) {
-    const hikeDoc = await Hike.findOne({ _id: hike._id });
+  async updateHikeById(id, updatetHike) {
+    const hikeDoc = await Hike.findOne({ _id: id });
     hikeDoc.name = updatetHike.name;
     hikeDoc.start = updatetHike.start;
     hikeDoc.end = updatetHike.end;

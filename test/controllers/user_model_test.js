@@ -80,9 +80,37 @@ suite("User Model Test", () => {
       email: "timo@gmail.de",
       password: "password",
     };
-    await db.userStore.updateUser(user, newUser);
+    await db.userStore.updateUserById(user._id, newUser);
     const updatedUser = await db.userStore.getUserById(user._id);
 
     assertSubset(updatedUser, newUser);
+  });
+
+  test("same email - update", async () => {
+    const user = await db.userStore.addUser(darth);
+    const newUser = { email: "darth@vader.com" };
+    try {
+      await db.userStore.updateUserById(testUsers[0]._id, newUser);
+      assert.fail("updateUserById should have thrown an error");
+    } catch (err) {
+      assert.equal(
+        err.message,
+        'E11000 duplicate key error collection: project.users index: email_1 dup key: { email: "darth@vader.com" }'
+      );
+    }
+  });
+
+  test("same email - add", async () => {
+    const user = await db.userStore.addUser(darth);
+    const newUser = { email: "darth@vader.com" };
+    try {
+      await db.userStore.addUser(newUser);
+      assert.fail("updateUserById should have thrown an error");
+    } catch (err) {
+      assert.equal(
+        err.message,
+        'E11000 duplicate key error collection: project.users index: email_1 dup key: { email: "darth@vader.com" }'
+      );
+    }
   });
 });

@@ -58,10 +58,14 @@ suite("User Model Test", () => {
     const newCategory = {
       name: "updated name",
     };
-    await db.categoryStore.updateCategory(category, newCategory);
+    await db.categoryStore.updateCategoryById(category._id, newCategory);
     const updatedCategory = await db.categoryStore.getCategoryById(
       category._id
     );
     assertSubset(updatedCategory, newCategory);
+  });
+
+  test("no param", async () => {
+    assert.isNull(await db.categoryStore.getCategoryById(null));
   });
 });
