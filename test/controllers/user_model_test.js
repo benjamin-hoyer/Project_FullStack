@@ -2,6 +2,9 @@ import { assert } from "chai";
 import { db } from "../../src/models/db.js";
 import { darth, testUsers } from "../fixtures.js";
 import { assertSubset } from "../test_utils.js";
+import { EventEmitter } from "events";
+
+EventEmitter.setMaxListeners(25);
 
 suite("User Model Test", () => {
   setup(async () => {
@@ -67,5 +70,19 @@ suite("User Model Test", () => {
     /* ****  Id 2  ***** */
     nullUser = await db.userStore.getUserById();
     assert.isNull(nullUser);
+  });
+
+  test("update user", async () => {
+    const user = await db.userStore.addUser(darth);
+    const newUser = {
+      firstName: "Jack",
+      lastName: "Daniels",
+      email: "timo@gmail.de",
+      password: "password",
+    };
+    await db.userStore.updateUser(user, newUser);
+    const updatedUser = await db.userStore.getUserById(user._id);
+
+    assertSubset(updatedUser, newUser);
   });
 });

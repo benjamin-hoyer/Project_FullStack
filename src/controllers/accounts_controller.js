@@ -5,14 +5,14 @@ export const accountsController = {
   index: {
     auth: false,
     handler: function (request, h) {
-      return h.view("main", { title: "Welcome to Playlist" });
+      return h.view("main", { title: "Welcome to Hiking" });
     },
   },
   //show signup
   showSignup: {
     auth: false,
     handler: function (request, h) {
-      return h.view("signup-view", { title: "Sign up for Playlist" });
+      return h.view("signup-view", { title: "Sign up for Hiking-Areas" });
     },
   },
   //Signup
@@ -36,7 +36,13 @@ export const accountsController = {
       try {
         await db.userStore.addUser(user);
       } catch (e) {
-        return h.redirect("/");
+        return h
+          .view("signup-view", {
+            title: "Sign up error",
+            errors: [{ message: e.message }],
+          })
+          .takeover()
+          .code(400);
       }
       return h.redirect("/");
     },
@@ -83,12 +89,12 @@ export const accountsController = {
     try {
       const user = await db.userStore.getUserById(session.id);
       if (!user) {
-        return { valid: false };
+        return { isValid: false };
       }
-      return { valid: true, credentials: user };
+      return { isValid: true, credentials: user };
     } catch (e) {
       console.log(e.message);
-      return { valid: false };
+      return { isValid: false };
     }
   },
 };

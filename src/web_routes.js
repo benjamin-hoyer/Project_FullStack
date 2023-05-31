@@ -1,4 +1,5 @@
 import { accountsController } from "./controllers/accounts_controller.js";
+import { dashboardController } from "./controllers/dashboard_controller.js";
 
 export const webRoutes = [
   { method: "GET", path: "/", config: accountsController.index },
@@ -7,6 +8,18 @@ export const webRoutes = [
   { method: "GET", path: "/logout", config: accountsController.logout },
   { method: "POST", path: "/register", config: accountsController.signup },
   { method: "POST", path: "/authenticate", config: accountsController.login },
+
+  { method: "GET", path: "/dashboard", config: dashboardController.index },
+  {
+    method: "POST",
+    path: "/dashboard/addcategory",
+    config: dashboardController.addCategory,
+  },
+  {
+    method: "GET",
+    path: "/dashboard/deletecategory/{id}",
+    config: dashboardController.deleteCategory,
+  },
 
   {
     method: "GET",
