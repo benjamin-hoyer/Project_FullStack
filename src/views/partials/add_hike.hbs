@@ -1,0 +1,33 @@
+<form class="box" action="/category/{{category._id}}/addhike" method="POST">
+    <label>Enter Hike Details:</label>
+    <div class="field is-horizontal">
+        <div class="field-body">
+            <div class="field">
+                <input class="input" type="text" placeholder="Enter name" name="name">
+            </div>
+            <div class="field">
+                <input class="input" type="text" placeholder="Enter start" name="start">
+            </div>
+            <div class="field">
+                <input class="input" type="text" placeholder="Enter end" name="end">
+            </div>
+            <div class="field">
+                <input class="input" type="text" placeholder="Enter description" name="description">
+            </div>
+            <div class="field">
+                <input class="input" type="text" placeholder="Enter duration" name="duration">
+            </div>
+            <div class="field">
+                <input class="input" type="text" placeholder="Enter distance" name="distance">
+
+            </div>
+            <div class="field">
+                <input class="input" type="text" placeholder="Enter latitude" name="lat">
+            </div>
+            <div class="field">
+                <input class="input" type="text" placeholder="Enter longitude" name="long">
+            </div>
+        </div>
+    </div>
+    <button class="button is-primary">Add Hike</button>
+</form>

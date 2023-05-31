@@ -1,0 +1,44 @@
+<table class="table is-fullwidth">
+    <thead>
+    <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each users}}
+        <tr>
+            <td>
+                {{firstName}}
+            </td>
+            <td>
+                {{lastName}}
+            </td>
+            <td>
+                {{email}}
+            </td>
+            <td>
+                {{password}}
+            </td>
+            <td>
+                {{role}}
+            </td>
+            <td>
+                <a href="/admin/edituser/{{_id}}" class="ui icon button">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
+            <td>
+                <a href="/admin/deleteuser/{{_id}}" class="ui icon button">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

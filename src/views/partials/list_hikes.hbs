@@ -1,0 +1,56 @@
+<table class="table is-fullwidth">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Description</th>
+        <th>Duration</th>
+        <th>Distance</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each category.hikes}}
+        <tr>
+            <td>
+                {{name}}
+            </td>
+            <td>
+                {{start}}
+            </td>
+            <td>
+                {{end}}
+            </td>
+            <td>
+                {{description}}
+            </td>
+            <td>
+                {{duration}}
+            </td>
+            <td>
+                {{distance}}
+            </td>
+            <td>
+                {{lat}}
+            </td>
+            <td>
+                {{long}}
+            </td>
+            <td>
+                <a href="/track/{{../category._id}}/edithike/{{_id}}" class="ui icon button">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
+            <td>
+                <a href="/playlist/{{../category._id}}/deletehike/{{_id}}" class="ui icon button">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

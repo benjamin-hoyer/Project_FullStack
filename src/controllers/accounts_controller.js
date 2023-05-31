@@ -12,7 +12,7 @@ export const accountsController = {
   showSignup: {
     auth: false,
     handler: function (request, h) {
-      return h.view("signup-view", { title: "Sign up for Hiking-Areas" });
+      return h.view("signup-view", { title: "Sign up for Storing your Hikes" });
     },
   },
   //Signup
@@ -33,6 +33,7 @@ export const accountsController = {
     },
     handler: async function (request, h) {
       const user = request.payload;
+      user.role = "user";
       try {
         await db.userStore.addUser(user);
       } catch (e) {
@@ -51,7 +52,7 @@ export const accountsController = {
   showLogin: {
     auth: false,
     handler: function (request, h) {
-      return h.view("login-view", { title: "Login to Playlist" });
+      return h.view("login_view", { title: "Login to Playlist" });
     },
   },
   //Login
@@ -62,7 +63,7 @@ export const accountsController = {
       options: { abortEarly: false },
       failAction: function (request, h, error) {
         return h
-          .view("login-view", { title: "Login error", errors: error.details })
+          .view("login_view", { title: "Login error", errors: error.details })
           .takeover()
           .code(400);
       },
