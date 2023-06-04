@@ -7,11 +7,10 @@ export const darth = {
   lastName: "Vader",
   email: "darth@vader.com",
   password: "password",
-  // address: {
 };
 
 // for Api
-export const darthCredential = {
+export const darthCredentials = {
   email: "darth@vader.com",
   password: "password",
 };

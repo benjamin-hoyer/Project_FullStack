@@ -8,14 +8,14 @@ export const IdSpec = Joi.alternatives()
 
 export const UserCredentialsSpec = Joi.object()
   .keys({
-    email: Joi.string().email().example("homer@simpson.com").required(),
+    email: Joi.string().email().example("obi@kenobi.com").required(),
     password: Joi.string().example("secret").required(),
   })
   .label("UserCredentials");
 
 export const UserSpec = UserCredentialsSpec.keys({
-  firstName: Joi.string().example("Homer").required(),
-  lastName: Joi.string().example("Simpson").required(),
+  firstName: Joi.string().example("Obi").required(),
+  lastName: Joi.string().example("Kenobi").required(),
 }).label("UserDetails");
 
 export const UserSpecPlus = UserSpec.keys({
@@ -31,8 +31,8 @@ export const UserArray = Joi.array().items(UserSpecPlus).label("UserArray");
 export const HikeSpec = Joi.object()
   .keys({
     name: Joi.string().required().example("Hike 1"),
-    start: Joi.string().required().example("Beethoven"),
-    end: Joi.string().required().example("Beethoven"),
+    start: Joi.string().required().example("Regensburg"),
+    end: Joi.string().required().example("Nürnberg"),
     description: Joi.string()
       .allow("")
       .optional()
@@ -60,15 +60,15 @@ export const CategorySpec = Joi.object()
     userid: IdSpec,
     hikes: HikeArraySpec,
   })
-  .label("Categories");
+  .label("Category");
 
-export const CategoryPlusSpec = CategorySpec.keys({
+export const CategorySpecPlus = CategorySpec.keys({
   _id: IdSpec,
   __v: Joi.number(),
 }).label("CategoryPlus");
 
 export const CategoryArraySpec = Joi.array()
-  .items(CategoryPlusSpec)
+  .items(CategorySpecPlus)
   .label("CategoryArray");
 
 /* ********************Authentication*************************** */

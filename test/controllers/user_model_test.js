@@ -20,8 +20,6 @@ suite("User Model Test", () => {
 
   teardown(async () => {
     await db.userStore.deleteAllUsers();
-    darth.role = "admin";
-    await db.userStore.addUser(darth);
   });
 
   test("add one user", async () => {
