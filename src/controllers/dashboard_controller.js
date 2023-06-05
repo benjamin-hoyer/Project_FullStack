@@ -12,6 +12,7 @@ export const dashboardController = {
         title: "Categories Dashboard",
         user: loggedInUser,
         categories: Categories,
+        admin: loggedInUser.role === "admin",
       };
       return h.view("dashboard_view", viewData);
     },

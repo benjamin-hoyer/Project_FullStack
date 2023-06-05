@@ -11,7 +11,7 @@ export const accountsController = {
   showSignup: {
     auth: false,
     handler: function (request, h) {
-      return h.view("signup-view", { title: "Sign up for Storing your Hikes" });
+      return h.view("signup_view", { title: "Sign up for Storing your Hikes" });
     },
   },
 
@@ -22,7 +22,7 @@ export const accountsController = {
       options: { abortEarly: false },
       failAction: function (request, h, error) {
         return h
-          .view("signup-view", {
+          .view("signup_view", {
             title: "Sign up error",
             errors: error.details,
           })
@@ -37,9 +37,9 @@ export const accountsController = {
         await db.userStore.addUser(user);
       } catch (e) {
         return h
-          .view("signup-view", {
+          .view("signup_view", {
             title: "Sign up error",
-            errors: [{ message: e.message }],
+            errors: [{ message: "Email was registered before" }],
           })
           .takeover()
           .code(400);
@@ -69,7 +69,13 @@ export const accountsController = {
       const { email, password } = request.payload;
       const user = await db.userStore.getUserByEmail(email);
       if (!user || user.password !== password) {
-        return h.redirect("/");
+        return h
+          .view("login_view", {
+            title: "Login error",
+            errors: [{ message: "Invalid email or password" }],
+          })
+          .takeover()
+          .code(401);
       }
       request.cookieAuth.set({ id: user._id });
       return h.redirect("/dashboard");

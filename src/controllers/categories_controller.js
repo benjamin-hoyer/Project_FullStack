@@ -19,10 +19,11 @@ export const categoriesController = {
     validate: {
       payload: HikeSpec,
       options: { abortEarly: false },
-      failAction: function (request, h, error) {
+      failAction: async function (request, h, error) {
         return h
-          .view("dashboard_view", {
+          .view("category_view", {
             title: "Hike error",
+            category: await db.categoryStore.getCategoryById(request.params.id),
             errors: error.details,
           })
           .takeover()
