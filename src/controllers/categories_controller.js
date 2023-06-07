@@ -4,12 +4,14 @@ import { HikeSpec } from "../models/joi_schemas.js";
 export const categoriesController = {
   index: {
     handler: async function (request, h) {
+      const loggedInUser = request.auth.credentials;
       const { id } = request.params;
       const category = await db.categoryStore.getCategoryById(id);
 
       const viewData = {
         title: "Category",
         category: category,
+        admin: loggedInUser.role === "admin",
       };
       return h.view("category_view", viewData);
     },

@@ -1,0 +1,42 @@
+<table class="table is-fullwidth">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Hikes in Category</th>
+        <th>Total Distance</th>
+        <th>Average Distance</th>
+        <th>Total Duration</th>
+        <th>Average Duration</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each categories}}
+        <tr>
+            <td>
+                <a href="/category/{{_id}}">{{name}}</a>
+
+            </td>
+            <td>
+                {{numberOfHikes}}
+            </td>
+            <td>
+                {{totalDistance}}
+            </td>
+            <td>
+                {{averageDistance}}
+            </td>
+            <td>
+                {{totalDuration}}
+            </td>
+            <td>
+                {{averageDuration}}
+            </td>
+            <td>
+                <a href="/dashboard/deletecategory/{{_id}}" class="ui icon button">
+                    <i class="fas fa-trash"></i>
+                </a>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

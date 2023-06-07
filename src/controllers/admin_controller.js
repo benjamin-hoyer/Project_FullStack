@@ -1,5 +1,6 @@
 import { db } from "../models/db.js";
 import { UserCredentialsSpec, UserSpecPlus } from "../models/joi_schemas.js";
+import { analyticsUtils } from "./analytics_utils.js";
 
 export const adminController = {
   async validateAdmin(request, h) {
@@ -16,9 +17,15 @@ export const adminController = {
         return h.redirect("/dashboard");
       }
       const users = await db.userStore.getAllUsers();
+      const categories = await db.categoryStore.getAllCategoriesWithHikes();
+      for (let i = 0; i < categories.length; i++) {
+        categories[i] = analyticsUtils.getAllAnalytics(categories[i]);
+      }
+
       return h.view("admin_view", {
         title: "Hiking Admin",
         users: users,
+        categories: categories,
         admin: "Admin",
       });
     },
@@ -46,11 +53,13 @@ export const adminController = {
             title: "Adding error",
             errors: error.details,
             users: await db.userStore.getAllUsers(),
+            admin: "Admin",
           })
           .takeover()
           .code(400);
       },
     },
+
     handler: async function (request, h) {
       const user = request.auth.credentials;
       if (user.role !== "admin") {
