@@ -2,6 +2,7 @@ import { accountsController } from "./controllers/accounts_controller.js";
 import { dashboardController } from "./controllers/dashboard_controller.js";
 import { categoriesController } from "./controllers/categories_controller.js";
 import { adminController } from "./controllers/admin_controller.js";
+import { userSettingsController } from "./controllers/user_settings_controller.js";
 
 export const webRoutes = [
   { method: "GET", path: "/", config: accountsController.index },
@@ -34,6 +35,8 @@ export const webRoutes = [
     path: "/category/{id}/deletehike/{hikeid}",
     config: categoriesController.deleteHike,
   },
+
+  { method: "GET", path: "/settings", config: userSettingsController.index },
 
   { method: "GET", path: "/admin", config: adminController.showAdmin },
   { method: "POST", path: "/admin/adduser", config: adminController.addUser },
