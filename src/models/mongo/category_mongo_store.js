@@ -37,4 +37,14 @@ export const categoryMongoStore = {
   async deleteAllCategories() {
     await Category.deleteMany({});
   },
+  async getAllCategoriesWithHikes() {
+    const categories = await Category.find().lean();
+    for (let i = 0; i < categories.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      categories[i].hikes = await hikeMongoStore.getHikesByCategoryId(
+        categories[i]._id
+      );
+    }
+    return categories;
+  },
 };
