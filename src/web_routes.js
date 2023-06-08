@@ -37,6 +37,11 @@ export const webRoutes = [
   },
 
   { method: "GET", path: "/settings", config: userSettingsController.index },
+  {
+    method: "POST",
+    path: "/settings/updateuser",
+    config: userSettingsController.updateUser,
+  },
 
   { method: "GET", path: "/admin", config: adminController.showAdmin },
   { method: "POST", path: "/admin/adduser", config: adminController.addUser },

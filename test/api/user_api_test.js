@@ -53,7 +53,6 @@ suite("User API tests", () => {
       const returnedUser = await apiService.getUser("1234");
       assert.fail("Should not return a response");
     } catch (error) {
-      console.log(error.response.data.message);
       assert(
         error.response.data.message ===
           "Database error: Probably no user with this id"

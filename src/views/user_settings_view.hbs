@@ -2,25 +2,25 @@
 
 <section class="section">
     <h1 class="title">Update User</h1>
-    <form action="/register" method="POST">
+    <form action="/settings/updateuser" method="POST">
         <label class="label">Name</label>
         <div class="field is-horizontal">
             <div class="field-body">
                 <div class="field">
-                    <input class="input" type="text" value={{user.firstName}} name="firstName">
+                    <input class="input" type="text" value="{{user.firstName}}" name="firstName">
                 </div>
                 <div class="field">
-                    <input class="input" type="text" value={{user.lastName}} name="lastName">
+                    <input class="input" type="text" value="{{user.lastName}}" name="lastName">
                 </div>
             </div>
         </div>
         <div class="field">
             <label class="label">Email</label>
-            <input class="input" type="text" value={{user.email}} name="email">
+            <input class="input" type="text" value="{{user.email}}" name="email">
         </div>
         <div class="field">
             <label class="label">Password</label>
-            <input class="input" type="password" value={{user.password}}
+            <input class="input" type="password" value="{{user.password}}"
                    name="password">
         </div>
         <div class="field is-grouped">

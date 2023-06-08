@@ -22,6 +22,10 @@ export const hikeMongoStore = {
     await Hike.deleteOne({ _id: id });
   },
 
+  async deleteHikesByCategoryId(id) {
+    await Hike.deleteMany({ categoryid: id });
+  },
+
   async deleteAllHikes() {
     await Hike.deleteMany({});
   },

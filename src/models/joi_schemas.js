@@ -8,14 +8,14 @@ export const IdSpec = Joi.alternatives()
 
 export const UserCredentialsSpec = Joi.object()
   .keys({
-    email: Joi.string().email().example("obi@kenobi.com").required(),
+    email: Joi.string().trim().email().example("obi@kenobi.com").required(),
     password: Joi.string().example("secret").required(),
   })
   .label("UserCredentials");
 
 export const UserSpec = UserCredentialsSpec.keys({
-  firstName: Joi.string().example("Obi").required(),
-  lastName: Joi.string().example("Kenobi").required(),
+  firstName: Joi.string().trim().example("Obi").required(),
+  lastName: Joi.string().trim().example("Kenobi").required(),
 }).label("UserDetails");
 
 export const UserSpecPlus = UserSpec.keys({
@@ -30,10 +30,10 @@ export const UserArray = Joi.array().items(UserSpecPlus).label("UserArray");
 
 export const HikeSpec = Joi.object()
   .keys({
-    name: Joi.string().required().example("Hike 1"),
-    start: Joi.string().required().example("Regensburg"),
-    end: Joi.string().required().example("Nürnberg"),
-    description: Joi.string()
+    name: Joi.string().trim().required().example("Hike 1"),
+    start: Joi.string().trim().required().example("Regensburg"),
+    end: Joi.string().trim().required().example("Nürnberg"),
+    description: Joi.string().trim()
       .allow("")
       .optional()
       .example("A lot of lakes along the trail"),
@@ -56,7 +56,7 @@ export const HikeArraySpec = Joi.array().items(HikeSpecPlus).label("HikeArray");
 
 export const CategorySpec = Joi.object()
   .keys({
-    name: Joi.string().required().example("Level 1"),
+    name: Joi.string().trim().required().example("Level 1"),
     userid: IdSpec,
     hikes: HikeArraySpec,
   })
