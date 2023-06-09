@@ -5,10 +5,11 @@
         <th>Start</th>
         <th>End</th>
         <th>Description</th>
-        <th>Duration</th>
-        <th>Distance</th>
-        <th>Latitude</th>
-        <th>Longitude</th>
+        <th>Duration in min</th>
+        <th>Distance in km</th>
+        <th>Latitude of Start</th>
+        <th>Longitude of Start</th>
+        <th>Picture of Hike</th>
         <th></th>
         <th></th>
     </tr>
@@ -41,7 +42,12 @@
                 {{long}}
             </td>
             <td>
-                <a href="/track/{{../category._id}}/edithike/{{_id}}" class="ui icon button">
+                <figure class="image is-256x256">
+                    <img src="{{img}}" alt ="no image">
+                </figure>
+            </td>
+            <td>
+                <a href="/category/{{../category._id}}/hike/{{_id}}" class="ui icon button">
                     <i class="fas fa-edit"></i>
                 </a>
             </td>

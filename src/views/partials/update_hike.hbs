@@ -1,0 +1,44 @@
+<form class="box" style="width: 50%" action="/category/{{category._id}}/updatehike/{{hike._id}}" method="POST">
+  <label>Edit Hike Details:</label>
+  <div class="field">
+    <label class="label">Name</label>
+    <input class="input" type="text" value="{{hike.name}}" name="name">
+  </div>
+  <label class="label">Start / End</label>
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <div class="field">
+        <input class="input" type="text" value="{{hike.start}}" name="start">
+      </div>
+      <div class="field">
+        <input class="input" type="text" value="{{hike.end}}" name="end">
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">Description</label>
+    <input class="input" type="text" value="{{hike.description}}" name="description">
+  </div>
+
+  <div class="field">
+    <label class="label">Duration</label>
+    <input class="input" type="text" value="{{hike.duration}}" name="duration">
+  </div>
+  <div class="field">
+    <label class="label">Distance</label>
+    <input class="input" type="text" value="{{hike.distance}}" name="distance">
+  </div>
+  <label class="label">Latitude / Longitude</label>
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <div class="field">
+        <input class="input" type="text" value="{{hike.lat}}" name="lat">
+      </div>
+      <div class="field">
+        <input class="input" type="text" value="{{hike.long}}" name="long">
+      </div>
+    </div>
+  </div>
+  <button class="button is-primary">Update Hike</button>
+</form>
+

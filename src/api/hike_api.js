@@ -1,11 +1,6 @@
 import Boom from "@hapi/boom";
 import { db } from "../models/db.js";
-import {
-  HikeArraySpec,
-  HikeSpec,
-  HikeSpecPlus,
-  IdSpec,
-} from "../models/joi_schemas.js";
+import { HikeArraySpec, HikeSpec, HikeSpecPlus, IdSpec } from "../models/joi_schemas.js";
 import { validationError } from "./logger.js";
 
 export const hikeApi = {
@@ -48,10 +43,7 @@ export const hikeApi = {
     auth: { strategy: "jwt" },
     handler: async function (request, h) {
       try {
-        const hike = await db.hikeStore.addHike(
-          request.params.id,
-          request.payload
-        );
+        const hike = await db.hikeStore.addHike(request.params.id, request.payload);
         if (hike) {
           return h.response(hike).code(201);
         }

@@ -2,9 +2,7 @@ import Joi from "joi";
 
 /* ********************Users*************************** */
 
-export const IdSpec = Joi.alternatives()
-  .try(Joi.string(), Joi.object())
-  .description("a valid ID");
+export const IdSpec = Joi.alternatives().try(Joi.string(), Joi.object()).description("a valid ID");
 
 export const UserCredentialsSpec = Joi.object()
   .keys({
@@ -33,14 +31,12 @@ export const HikeSpec = Joi.object()
     name: Joi.string().trim().required().example("Hike 1"),
     start: Joi.string().trim().required().example("Regensburg"),
     end: Joi.string().trim().required().example("Nürnberg"),
-    description: Joi.string().trim()
-      .allow("")
-      .optional()
-      .example("A lot of lakes along the trail"),
+    description: Joi.string().trim().allow("").optional().example("A lot of lakes along the trail"),
     duration: Joi.number().allow("").optional().example(450),
     distance: Joi.number().allow("").optional().example(1200),
     lat: Joi.number().allow("").required().example(23.42343),
     long: Joi.number().allow("").required().example(12.5434534),
+    img: Joi.string().allow("").optional().example("https://res.cloudinary.com/image.jpg"),
     categoryid: IdSpec,
   })
   .label("Hike");
@@ -67,16 +63,12 @@ export const CategorySpecPlus = CategorySpec.keys({
   __v: Joi.number(),
 }).label("CategoryPlus");
 
-export const CategoryArraySpec = Joi.array()
-  .items(CategorySpecPlus)
-  .label("CategoryArray");
+export const CategoryArraySpec = Joi.array().items(CategorySpecPlus).label("CategoryArray");
 
 /* ********************Authentication*************************** */
 export const JwtAuth = Joi.object()
   .keys({
     success: Joi.boolean().example("true").required(),
-    token: Joi.string()
-      .example("eyJhbGciOiJND.g5YmJisIjoiaGYwNTNjAOhE.gCWGmY5-YigQw0DCBo")
-      .required(),
+    token: Joi.string().example("eyJhbGciOiJND.g5YmJisIjoiaGYwNTNjAOhE.gCWGmY5-YigQw0DCBo").required(),
   })
   .label("JwtAuth");

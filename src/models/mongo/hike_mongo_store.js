@@ -40,6 +40,7 @@ export const hikeMongoStore = {
     hikeDoc.distance = updatetHike.distance;
     hikeDoc.lat = updatetHike.lat;
     hikeDoc.long = updatetHike.long;
+    hikeDoc.img = updatetHike.img;
     await hikeDoc.save();
   },
 };
