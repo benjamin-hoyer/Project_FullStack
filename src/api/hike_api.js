@@ -2,6 +2,7 @@ import Boom from "@hapi/boom";
 import { db } from "../models/db.js";
 import { HikeArraySpec, HikeSpec, HikeSpecPlus, IdSpec } from "../models/joi_schemas.js";
 import { validationError } from "./logger.js";
+import { imageStore } from "../models/image_store.js";
 
 export const hikeApi = {
   find: {
@@ -90,5 +91,41 @@ export const hikeApi = {
     tags: ["api"],
     description: "Delete a hike",
     validate: { params: { id: IdSpec }, failAction: validationError },
+  },
+
+  uploadImage: {
+    auth: { strategy: "jwt" },
+    handler: async function (request, h) {
+      const { hikeid } = request.params;
+      const { id } = request.params;
+      const hike = await db.hikeStore.getHikeById(hikeid);
+      try {
+        const file = request.payload.imagefile;
+        if (Object.keys(file).length > 0) {
+          await imageStore.uploadImage(id, hikeid, file);
+          return h.redirect(`/category/${id}/hike/${hikeid}`);
+        }
+        return h.redirect(`/category/${id}/hike/${hikeid}`);
+      } catch (err) {
+        return Boom.serverUnavailable("Upload Error");
+      }
+    },
+    tags: ["api"],
+    description: "Upload a hike image",
+    validate: { params: { id: IdSpec, hikeid: IdSpec }, failAction: validationError },
+  },
+  deleteImage: {
+    auth: { strategy: "jwt" },
+    handler: async function (request, h) {
+      const { hikeid } = request.params;
+      const { id } = request.params;
+      const hike = await db.hikeStore.getHikeById(hikeid);
+      try {
+        await imageStore.deleteImage(id, hikeid);
+        return h.redirect(`/category/${id}/hike/${hikeid}`);
+      } catch (err) {
+        return Boom.serverUnavailable("Upload Error");
+      }
+    },
   },
 };

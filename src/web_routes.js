@@ -80,8 +80,9 @@ export const webRoutes = [
   {
     method: "POST",
     path: "/category/{id}/uploadimage/{hikeid}",
-    config: hikeController.update,
+    config: hikeController.uploadImage,
   },
+  { method: "POST", path: "/category/{id}/deleteimg/{hikeid}", config: hikeController.deleteImg },
 
   {
     method: "GET",

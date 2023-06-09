@@ -1,5 +1,6 @@
 import { HikeSpec } from "../models/joi_schemas.js";
 import { db } from "../models/db.js";
+import { imageStore } from "../models/image_store.js";
 
 export const hikeController = {
   index: {
@@ -65,14 +66,42 @@ export const hikeController = {
         }
         return h.redirect(`/category/${id}/hike/${hikeid}`);
       } catch (err) {
+        console.log(err);
         return h.view("hike_view", {
           title: "Upload error",
-          errors: [{ message: err.message }],
+          errors: [{ message: "Error Uploading Images" }],
           hike: hike,
           category: await db.categoryStore.getCategoryById(id),
           admin: request.auth.credentials.role === "admin",
         });
       }
+    },
+    payload: {
+      multipart: true,
+      output: "data",
+      maxBytes: 209715200,
+      parse: true,
+    },
+  },
+  deleteImg: {
+    handler: async function (request, h) {
+      const { hikeid } = request.params;
+      const { id } = request.params;
+      const img = request.payload.image;
+      const hike = await db.hikeStore.getHikeById(hikeid);
+      const hikeIndex = hike.img.indexOf(img);
+      const imgUrl = new URL(img);
+      const publicId = imgUrl.pathname.split("/").pop().split(".")[0];
+      if (hikeIndex > -1) {
+        hike.img.splice(hikeIndex, 1);
+        await db.hikeStore.updateHikeById(hikeid, hike);
+        try {
+          await imageStore.deleteImage(publicId);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      return h.redirect(`/category/${id}/hike/${hikeid}`);
     },
   },
 };

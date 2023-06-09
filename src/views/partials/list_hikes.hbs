@@ -1,62 +1,64 @@
 <table class="table is-fullwidth">
-    <thead>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Description</th>
+    <th>Duration in min</th>
+    <th>Distance in km</th>
+    <th>Latitude of Start</th>
+    <th>Longitude of Start</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each category.hikes}}
     <tr>
-        <th>Name</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Description</th>
-        <th>Duration in min</th>
-        <th>Distance in km</th>
-        <th>Latitude of Start</th>
-        <th>Longitude of Start</th>
-        <th>Picture of Hike</th>
-        <th></th>
-        <th></th>
+      <td>
+        {{name}}
+      </td>
+      <td>
+        {{start}}
+      </td>
+      <td>
+        {{end}}
+      </td>
+      <td>
+        {{description}}
+      </td>
+      <td>
+        {{duration}}
+      </td>
+      <td>
+        {{distance}}
+      </td>
+      <td>
+        {{lat}}
+      </td>
+      <td>
+        {{long}}
+      </td>
+
+      <td>
+        <a href="/category/{{../category._id}}/hike/{{_id}}" class="ui icon button">
+          <i class="fas fa-edit"></i>
+        </a>
+      </td>
+      <td>
+        <a href="/category/{{../category._id}}/deletehike/{{_id}}" class="ui icon button">
+          <i class="fas fa-trash"></i>
+        </a>
+      </td>
+      {{#each img}}
+        <td>
+          <figure class="image image is-128x128">
+            <img src="{{this}}" alt="no image">
+          </figure>
+        </td>
+      {{/each}}
     </tr>
-    </thead>
-    <tbody>
-    {{#each category.hikes}}
-        <tr>
-            <td>
-                {{name}}
-            </td>
-            <td>
-                {{start}}
-            </td>
-            <td>
-                {{end}}
-            </td>
-            <td>
-                {{description}}
-            </td>
-            <td>
-                {{duration}}
-            </td>
-            <td>
-                {{distance}}
-            </td>
-            <td>
-                {{lat}}
-            </td>
-            <td>
-                {{long}}
-            </td>
-            <td>
-                <figure class="image is-256x256">
-                    <img src="{{img}}" alt ="no image">
-                </figure>
-            </td>
-            <td>
-                <a href="/category/{{../category._id}}/hike/{{_id}}" class="ui icon button">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </td>
-            <td>
-                <a href="/category/{{../category._id}}/deletehike/{{_id}}" class="ui icon button">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </td>
-        </tr>
-    {{/each}}
-    </tbody>
+  {{/each}}
+  </tbody>
 </table>
