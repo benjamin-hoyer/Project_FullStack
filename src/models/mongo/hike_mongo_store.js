@@ -22,6 +22,10 @@ export const hikeMongoStore = {
     await Hike.deleteOne({ _id: id });
   },
 
+  async deleteHikesByCategoryId(id) {
+    await Hike.deleteMany({ categoryid: id });
+  },
+
   async deleteAllHikes() {
     await Hike.deleteMany({});
   },
@@ -36,6 +40,7 @@ export const hikeMongoStore = {
     hikeDoc.distance = updatetHike.distance;
     hikeDoc.lat = updatetHike.lat;
     hikeDoc.long = updatetHike.long;
+    hikeDoc.img = updatetHike.img;
     await hikeDoc.save();
   },
 };

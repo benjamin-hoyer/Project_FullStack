@@ -57,7 +57,9 @@ export const userApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const user = await db.userStore.addUser(request.payload);
+        const newUser = request.payload;
+        newUser.role = "user";
+        const user = await db.userStore.addUser(newUser);
         if (user) {
           return h.response(user).code(201);
         }

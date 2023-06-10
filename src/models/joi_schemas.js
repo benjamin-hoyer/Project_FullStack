@@ -2,20 +2,18 @@ import Joi from "joi";
 
 /* ********************Users*************************** */
 
-export const IdSpec = Joi.alternatives()
-  .try(Joi.string(), Joi.object())
-  .description("a valid ID");
+export const IdSpec = Joi.alternatives().try(Joi.string(), Joi.object()).description("a valid ID");
 
 export const UserCredentialsSpec = Joi.object()
   .keys({
-    email: Joi.string().email().example("obi@kenobi.com").required(),
+    email: Joi.string().trim().email().example("obi@kenobi.com").required(),
     password: Joi.string().example("secret").required(),
   })
   .label("UserCredentials");
 
 export const UserSpec = UserCredentialsSpec.keys({
-  firstName: Joi.string().example("Obi").required(),
-  lastName: Joi.string().example("Kenobi").required(),
+  firstName: Joi.string().trim().example("Obi").required(),
+  lastName: Joi.string().trim().example("Kenobi").required(),
 }).label("UserDetails");
 
 export const UserSpecPlus = UserSpec.keys({
@@ -30,17 +28,15 @@ export const UserArray = Joi.array().items(UserSpecPlus).label("UserArray");
 
 export const HikeSpec = Joi.object()
   .keys({
-    name: Joi.string().required().example("Hike 1"),
-    start: Joi.string().required().example("Regensburg"),
-    end: Joi.string().required().example("Nürnberg"),
-    description: Joi.string()
-      .allow("")
-      .optional()
-      .example("A lot of lakes along the trail"),
+    name: Joi.string().trim().required().example("Hike 1"),
+    start: Joi.string().trim().required().example("Regensburg"),
+    end: Joi.string().trim().required().example("Nürnberg"),
+    description: Joi.string().trim().allow("").optional().example("A lot of lakes along the trail"),
     duration: Joi.number().allow("").optional().example(450),
     distance: Joi.number().allow("").optional().example(1200),
     lat: Joi.number().allow("").required().example(23.42343),
     long: Joi.number().allow("").required().example(12.5434534),
+    img: Joi.string().allow("").optional().example("https://res.cloudinary.com/image.jpg"),
     categoryid: IdSpec,
   })
   .label("Hike");
@@ -56,7 +52,7 @@ export const HikeArraySpec = Joi.array().items(HikeSpecPlus).label("HikeArray");
 
 export const CategorySpec = Joi.object()
   .keys({
-    name: Joi.string().required().example("Level 1"),
+    name: Joi.string().trim().required().example("Level 1"),
     userid: IdSpec,
     hikes: HikeArraySpec,
   })
@@ -67,16 +63,12 @@ export const CategorySpecPlus = CategorySpec.keys({
   __v: Joi.number(),
 }).label("CategoryPlus");
 
-export const CategoryArraySpec = Joi.array()
-  .items(CategorySpecPlus)
-  .label("CategoryArray");
+export const CategoryArraySpec = Joi.array().items(CategorySpecPlus).label("CategoryArray");
 
 /* ********************Authentication*************************** */
 export const JwtAuth = Joi.object()
   .keys({
     success: Joi.boolean().example("true").required(),
-    token: Joi.string()
-      .example("eyJhbGciOiJND.g5YmJisIjoiaGYwNTNjAOhE.gCWGmY5-YigQw0DCBo")
-      .required(),
+    token: Joi.string().example("eyJhbGciOiJND.g5YmJisIjoiaGYwNTNjAOhE.gCWGmY5-YigQw0DCBo").required(),
   })
   .label("JwtAuth");

@@ -1,12 +1,8 @@
 import Boom from "@hapi/boom";
 import { db } from "../models/db.js";
-import {
-  HikeArraySpec,
-  HikeSpec,
-  HikeSpecPlus,
-  IdSpec,
-} from "../models/joi_schemas.js";
+import { HikeArraySpec, HikeSpec, HikeSpecPlus, IdSpec } from "../models/joi_schemas.js";
 import { validationError } from "./logger.js";
+import { imageStore } from "../models/image_store.js";
 
 export const hikeApi = {
   find: {
@@ -48,10 +44,7 @@ export const hikeApi = {
     auth: { strategy: "jwt" },
     handler: async function (request, h) {
       try {
-        const hike = await db.hikeStore.addHike(
-          request.params.id,
-          request.payload
-        );
+        const hike = await db.hikeStore.addHike(request.params.id, request.payload);
         if (hike) {
           return h.response(hike).code(201);
         }
@@ -98,5 +91,54 @@ export const hikeApi = {
     tags: ["api"],
     description: "Delete a hike",
     validate: { params: { id: IdSpec }, failAction: validationError },
+  },
+
+  uploadImage: {
+    auth: { strategy: "jwt" },
+    handler: async function (request, h) {
+      const { id } = request.params;
+      const hike = await db.hikeStore.getHikeById(id);
+      try {
+        const file = request.payload.imagefile;
+        if (Object.keys(file).length > 0) {
+          const url = await imageStore.uploadImage(file);
+          hike.img.push(url);
+          await db.hikeStore.updateHikeById(id, hike);
+          return h.response(hike).code(204);
+        }
+        return Boom.badImplementation("error uploading image");
+      } catch (err) {
+        return Boom.serverUnavailable("Upload Error");
+      }
+    },
+    tags: ["api"],
+    description: "Upload a hike image",
+    validate: { params: { id: IdSpec, hikeid: IdSpec }, failAction: validationError },
+  },
+
+  deleteImage: {
+    auth: { strategy: "jwt" },
+    handler: async function (request, h) {
+      const { id } = request.params;
+      const img = request.payload.image;
+      const hike = await db.hikeStore.getHikeById(id);
+      const hikeIndex = hike.img.indexOf(img);
+      const imgUrl = new URL(img);
+      const publicId = imgUrl.pathname.split("/").pop().split(".")[0];
+      if (hikeIndex > -1) {
+        hike.img.splice(hikeIndex, 1);
+        await db.hikeStore.updateHikeById(id, hike);
+        try {
+          await imageStore.deleteImage(publicId);
+          return h.response().code(204);
+        } catch (err) {
+          return Boom.serverUnavailable("Delete Error");
+        }
+      }
+      return Boom.notFound("No Image with this id");
+    },
+    tags: ["api"],
+    description: "Delete a hike image",
+    validate: { params: { id: IdSpec, hikeid: IdSpec }, failAction: validationError },
   },
 };

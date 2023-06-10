@@ -31,6 +31,7 @@ export const categoryMongoStore = {
   },
 
   async deleteCategoryById(id) {
+    await hikeMongoStore.deleteHikesByCategoryId(id);
     await Category.deleteOne({ _id: id });
   },
 

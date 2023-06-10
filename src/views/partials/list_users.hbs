@@ -7,7 +7,6 @@
         <th>Password</th>
         <th>Role</th>
         <th></th>
-        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -28,11 +27,7 @@
             <td>
                 {{role}}
             </td>
-            <td>
-                <a href="/admin/edituser/{{_id}}" class="ui icon button">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </td>
+
             <td>
                 <a href="/admin/deleteuser/{{_id}}" class="ui icon button">
                     <i class="fas fa-trash"></i>
@@ -42,3 +37,4 @@
     {{/each}}
     </tbody>
 </table>
+
