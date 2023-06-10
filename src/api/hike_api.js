@@ -96,16 +96,17 @@ export const hikeApi = {
   uploadImage: {
     auth: { strategy: "jwt" },
     handler: async function (request, h) {
-      const { hikeid } = request.params;
       const { id } = request.params;
-      const hike = await db.hikeStore.getHikeById(hikeid);
+      const hike = await db.hikeStore.getHikeById(id);
       try {
         const file = request.payload.imagefile;
         if (Object.keys(file).length > 0) {
-          await imageStore.uploadImage(id, hikeid, file);
-          return h.redirect(`/category/${id}/hike/${hikeid}`);
+          const url = await imageStore.uploadImage(file);
+          hike.img.push(url);
+          await db.hikeStore.updateHikeById(id, hike);
+          return h.response(hike).code(204);
         }
-        return h.redirect(`/category/${id}/hike/${hikeid}`);
+        return Boom.badImplementation("error uploading image");
       } catch (err) {
         return Boom.serverUnavailable("Upload Error");
       }
@@ -114,18 +115,30 @@ export const hikeApi = {
     description: "Upload a hike image",
     validate: { params: { id: IdSpec, hikeid: IdSpec }, failAction: validationError },
   },
+
   deleteImage: {
     auth: { strategy: "jwt" },
     handler: async function (request, h) {
-      const { hikeid } = request.params;
       const { id } = request.params;
-      const hike = await db.hikeStore.getHikeById(hikeid);
-      try {
-        await imageStore.deleteImage(id, hikeid);
-        return h.redirect(`/category/${id}/hike/${hikeid}`);
-      } catch (err) {
-        return Boom.serverUnavailable("Upload Error");
+      const img = request.payload.image;
+      const hike = await db.hikeStore.getHikeById(id);
+      const hikeIndex = hike.img.indexOf(img);
+      const imgUrl = new URL(img);
+      const publicId = imgUrl.pathname.split("/").pop().split(".")[0];
+      if (hikeIndex > -1) {
+        hike.img.splice(hikeIndex, 1);
+        await db.hikeStore.updateHikeById(id, hike);
+        try {
+          await imageStore.deleteImage(publicId);
+          return h.response().code(204);
+        } catch (err) {
+          return Boom.serverUnavailable("Delete Error");
+        }
       }
+      return Boom.notFound("No Image with this id");
     },
+    tags: ["api"],
+    description: "Delete a hike image",
+    validate: { params: { id: IdSpec, hikeid: IdSpec }, failAction: validationError },
   },
 };
