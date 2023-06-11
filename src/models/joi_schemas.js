@@ -36,7 +36,8 @@ export const HikeSpec = Joi.object()
     distance: Joi.number().allow("").optional().example(1200),
     lat: Joi.number().allow("").required().example(23.42343),
     long: Joi.number().allow("").required().example(12.5434534),
-    img: Joi.string().allow("").optional().example("https://res.cloudinary.com/image.jpg"),
+    visibility: Joi.string().required().valid("public", "private").example("public"),
+    img: Joi.array().items(Joi.string().allow("").optional().example("https://res.cloudinary.com/image.jpg"),),
     categoryid: IdSpec,
   })
   .label("Hike");

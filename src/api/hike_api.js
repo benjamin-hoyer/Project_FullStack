@@ -20,6 +20,22 @@ export const hikeApi = {
     notes: "Returns all hikeApi",
   },
 
+  findPublic: {
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        return await db.hikeStore.getAllPublicHikes();
+      } catch (err) {
+        console.log(err);
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    response: { schema: HikeArraySpec, failAction: validationError },
+    description: "Get all Public HikesApi",
+    notes: "Returns all Public Hikes",
+  },
+
   findOne: {
     auth: { strategy: "jwt" },
     async handler(request) {

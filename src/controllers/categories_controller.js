@@ -44,6 +44,7 @@ export const categoriesController = {
         distance: request.payload.distance,
         lat: request.payload.lat,
         long: request.payload.long,
+        visibility: request.payload.visibility,
       };
       try {
         await db.hikeStore.addHike(category._id, newCategory);

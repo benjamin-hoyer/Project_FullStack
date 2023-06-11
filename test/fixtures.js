@@ -63,6 +63,7 @@ export const bigHike = {
   duration: 200,
   lat: 200,
   long: 200,
+  visible: "public",
   start: "start",
   end: "end",
 };
@@ -77,6 +78,8 @@ export const testHikes = [
     long: 200,
     start: "start",
     end: "end",
+    visible: "public",
+
   },
   {
     name: "Grouse Grind",
@@ -87,6 +90,8 @@ export const testHikes = [
     long: -123.0997,
     start: "start",
     end: "end",
+    visible: "public",
+
   },
   {
     name: "Dog Mountain",
@@ -96,5 +101,6 @@ export const testHikes = [
     long: -123.0997,
     start: "start",
     end: "end",
+    visible: "public",
   },
 ];

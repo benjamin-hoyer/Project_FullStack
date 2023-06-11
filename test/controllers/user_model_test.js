@@ -1,8 +1,8 @@
 import { assert } from "chai";
+import { EventEmitter } from "events";
 import { db } from "../../src/models/db.js";
 import { darth, testUsers } from "../fixtures.js";
 import { assertSubset } from "../test_utils.js";
-import { EventEmitter } from "events";
 
 EventEmitter.setMaxListeners(25);
 
@@ -64,7 +64,7 @@ suite("User Model Test", () => {
     } catch (err) {
       assert.equal(
         err.message,
-        'Cast to ObjectId failed for value "" (type string) at path "_id" for model "User"'
+        "Cast to ObjectId failed for value \"\" (type string) at path \"_id\" for model \"User\""
       );
     }
     /* ****  Id 2  ***** */
@@ -95,7 +95,7 @@ suite("User Model Test", () => {
     } catch (err) {
       assert.equal(
         err.message,
-        'E11000 duplicate key error collection: project.users index: email_1 dup key: { email: "darth@vader.com" }'
+        "E11000 duplicate key error collection: project.users index: email_1 dup key: { email: \"darth@vader.com\" }"
       );
     }
   });
@@ -109,7 +109,7 @@ suite("User Model Test", () => {
     } catch (err) {
       assert.equal(
         err.message,
-        'E11000 duplicate key error collection: project.users index: email_1 dup key: { email: "darth@vader.com" }'
+        "E11000 duplicate key error collection: project.users index: email_1 dup key: { email: \"darth@vader.com\" }"
       );
     }
   });

@@ -18,7 +18,7 @@ export const adminController = {
       }
       const users = await db.userStore.getAllUsers();
       const categories = await db.categoryStore.getAllCategoriesWithHikes();
-      for (let i = 0; i < categories.length; i++) {
+      for (let i = 0; i < categories.length; i+=1) {
         categories[i] = analyticsUtils.getAllAnalytics(categories[i]);
       }
 

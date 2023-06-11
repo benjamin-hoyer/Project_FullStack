@@ -6,28 +6,28 @@ const analyticsPartials = {
   },
   totalDistanceInCategory(hikes) {
     let total = 0;
-    for (let i = 0; i < hikes.length; i++) {
+    for (let i = 0; i < hikes.length; i+=1) {
       total += hikes[i].distance;
     }
     return total;
   },
   averageDistanceInCategory(hikes) {
     let total = 0;
-    for (let i = 0; i < hikes.length; i++) {
+    for (let i = 0; i < hikes.length; i+=1) {
       total += hikes[i].distance;
     }
     return total / hikes.length || 0;
   },
   totalDurationInCategory(hikes) {
     let total = 0;
-    for (let i = 0; i < hikes.length; i++) {
+    for (let i = 0; i < hikes.length; i+=1) {
       total += hikes[i].duration;
     }
     return total;
   },
   averageDurationInCategory(hikes) {
     let total = 0;
-    for (let i = 0; i < hikes.length; i++) {
+    for (let i = 0; i < hikes.length; i+=1) {
       total += hikes[i].duration;
     }
     return total / hikes.length || 0;

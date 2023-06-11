@@ -15,6 +15,7 @@ export const apiRoutes = [
   { method: "DELETE", path: "/api/categories/{id}", config: categoryApi.deleteOne },
 
   { method: "GET", path: "/api/hikes", config: hikeApi.find },
+  { method: "GET", path: "/api/publichikes", config: hikeApi.findPublic },
   { method: "GET", path: "/api/hikes/{id}", config: hikeApi.findOne },
   { method: "POST", path: "/api/categories/{id}/hikes", config: hikeApi.create },
   { method: "DELETE", path: "/api/hikes", config: hikeApi.deleteAll },

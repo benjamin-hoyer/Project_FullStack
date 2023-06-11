@@ -74,7 +74,7 @@ export const apiService = {
   },
 
   async deleteHike(id) {
-    return await axios.delete(`${this.hikingUrl}/api/hikes/${id}`);
+    return axios.delete(`${this.hikingUrl}/api/hikes/${id}`);
   },
 
   async authenticate(user) {
