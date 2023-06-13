@@ -10,9 +10,7 @@ import {
 
 export const categoryApi = {
   find: {
-    auth: {
-      strategy: "jwt",
-    },
+    auth: false,
     handler: async function (request, h) {
       try {
         return await db.categoryStore.getAllCategories();

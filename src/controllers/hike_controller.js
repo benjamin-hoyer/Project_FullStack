@@ -46,6 +46,8 @@ export const hikeController = {
         distance: request.payload.distance,
         lat: request.payload.lat,
         long: request.payload.long,
+        latend: request.payload.latend,
+        longend: request.payload.longend,
         visibility: request.payload.visibility,
       };
       try {

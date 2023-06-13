@@ -35,7 +35,9 @@ export const HikeSpec = Joi.object()
     duration: Joi.number().allow("").optional().example(450),
     distance: Joi.number().allow("").optional().example(1200),
     lat: Joi.number().allow("").required().example(23.42343),
+    latend: Joi.number().allow("").required().example(23.42343),
     long: Joi.number().allow("").required().example(12.5434534),
+    longend: Joi.number().allow("").required().example(12.5434534),
     visibility: Joi.string().required().valid("public", "private").example("public"),
     img: Joi.array().items(Joi.string().allow("").optional().example("https://res.cloudinary.com/image.jpg"),),
     categoryid: IdSpec,
@@ -71,5 +73,7 @@ export const JwtAuth = Joi.object()
   .keys({
     success: Joi.boolean().example("true").required(),
     token: Joi.string().example("eyJhbGciOiJND.g5YmJisIjoiaGYwNTNjAOhE.gCWGmY5-YigQw0DCBo").required(),
+    _id: IdSpec,
+    role: Joi.string().required().valid("user", "admin").example("user"),
   })
   .label("JwtAuth");

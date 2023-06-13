@@ -1,4 +1,5 @@
 import { Hike } from "./hike.js";
+import { imageStore } from "./image_store.js";
 
 export const hikeMongoStore = {
   async getAllHikes() {
@@ -45,6 +46,8 @@ export const hikeMongoStore = {
     hikeDoc.distance = updatetHike.distance;
     hikeDoc.lat = updatetHike.lat;
     hikeDoc.long = updatetHike.long;
+    hikeDoc.latend = updatetHike.latend;
+    hikeDoc.longend = updatetHike.longend;
     hikeDoc.visibility = updatetHike.visibility;
     if (updatetHike.img) {
       hikeDoc.img = updatetHike.img;

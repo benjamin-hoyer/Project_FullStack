@@ -1,5 +1,6 @@
 import { db } from "../models/db.js";
 import { HikeSpec } from "../models/joi_schemas.js";
+import { imageStore } from "../models/image_store.js";
 
 export const categoriesController = {
   index: {
@@ -44,6 +45,8 @@ export const categoriesController = {
         distance: request.payload.distance,
         lat: request.payload.lat,
         long: request.payload.long,
+        latend: request.payload.latend,
+        longend: request.payload.longend,
         visibility: request.payload.visibility,
       };
       try {
@@ -67,6 +70,8 @@ export const categoriesController = {
       const { hikeid } = request.params;
       const category = await db.categoryStore.getCategoryById(id);
       await db.hikeStore.deleteHikeById(hikeid);
+      const hike = await db.hikeStore.getHikeById(hikeid);
+      await imageStore.deleteAllImagesByHike(hike);
       return h.redirect(`/category/${category._id}`);
     },
   },

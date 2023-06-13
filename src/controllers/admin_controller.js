@@ -1,6 +1,7 @@
 import { db } from "../models/db.js";
 import { UserCredentialsSpec, UserSpecPlus } from "../models/joi_schemas.js";
 import { analyticsUtils } from "./analytics_utils.js";
+import { imageStore } from "../models/image_store.js";
 
 export const adminController = {
   async validateAdmin(request, h) {
@@ -39,6 +40,7 @@ export const adminController = {
       }
       const userId = request.params.id;
       await db.userStore.deleteUserById(userId);
+      await db.categoryStore.deleteAllCategoriesByUserId(userId);
       return h.redirect("/admin");
     },
   },
