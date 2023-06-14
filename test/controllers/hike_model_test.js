@@ -24,8 +24,7 @@ suite("Hike Model Test", () => {
   });
 
   test("add one hike", async () => {
-    const newCategory = await db.categoryStore.addCategory(level3);
-    const newHike = await db.hikeStore.addHike(newCategory._id, bigHike);
+    const newHike = await db.hikeStore.addHike(testCategory._id, bigHike);
     assertSubset(bigHike, newHike);
   });
 

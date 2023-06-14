@@ -1,5 +1,4 @@
 import { Hike } from "./hike.js";
-import { imageStore } from "./image_store.js";
 
 export const hikeMongoStore = {
   async getAllHikes() {

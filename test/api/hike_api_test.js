@@ -40,6 +40,8 @@ suite(" Hike API tests", () => {
   teardown(async () => {
     // Delete all users if authenticated ( same email ist not allowed )
     if (apiService.isAuthenticated()) {
+      await apiService.deleteAllCategories();
+      await apiService.deleteAllHikes();
       await apiService.deleteAllUsers();
     }
   });

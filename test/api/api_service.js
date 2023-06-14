@@ -23,8 +23,7 @@ export const apiService = {
   async deleteAllUsers() {
     const res = await axios.delete(`${this.hikingUrl}/api/users`);
     return res.data;
-  },
-  /* *************** Categories ************************** */
+  }, /* *************** Categories ************************** */
   async createCategory(category) {
     const res = await axios.post(`${this.hikingUrl}/api/categories`, category);
     return res.data;
@@ -51,10 +50,7 @@ export const apiService = {
 
   /* *************** Hikes *********************** */
   async createHike(id, hike) {
-    const res = await axios.post(
-      `${this.hikingUrl}/api/categories/${id}/hikes`,
-      hike
-    );
+    const res = await axios.post(`${this.hikingUrl}/api/categories/${id}/hikes`, hike);
     return res.data;
   },
 
@@ -79,10 +75,7 @@ export const apiService = {
 
   async authenticate(user) {
     let response = 0;
-    response = await axios.post(
-      `${this.hikingUrl}/api/users/authenticate`,
-      user
-    );
+    response = await axios.post(`${this.hikingUrl}/api/users/authenticate`, user);
     axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
     return response.data;
   },

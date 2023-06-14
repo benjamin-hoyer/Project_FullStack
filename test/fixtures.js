@@ -44,7 +44,7 @@ export const level3 = {
 
 export const testCategories = [
   {
-    name: "Level3",
+    name: "Level34",
   },
   {
     name: "LakeWalks",
@@ -63,7 +63,9 @@ export const bigHike = {
   duration: 200,
   lat: 200,
   long: 200,
-  visible: "public",
+  latend: 200,
+  longend: 200,
+  visibility: "public",
   start: "start",
   end: "end",
 };
@@ -76,9 +78,11 @@ export const testHikes = [
     duration: 200,
     lat: 200,
     long: 200,
+    latend: 200,
+    longend: 200,
     start: "start",
     end: "end",
-    visible: "public",
+    visibility: "public",
 
   },
   {
@@ -88,9 +92,11 @@ export const testHikes = [
     duration: 90,
     lat: 49.3721,
     long: -123.0997,
+    latend: 200,
+    longend: 200,
     start: "start",
     end: "end",
-    visible: "public",
+    visibility: "public",
 
   },
   {
@@ -99,8 +105,10 @@ export const testHikes = [
     duration: 120,
     lat: 49.3721,
     long: -123.0997,
+    latend: 200,
+    longend: 200,
     start: "start",
     end: "end",
-    visible: "public",
+    visibility: "public",
   },
 ];
