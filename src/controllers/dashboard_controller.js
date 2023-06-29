@@ -1,5 +1,6 @@
 import { db } from "../models/db.js";
 import { CategorySpec } from "../models/joi_schemas.js";
+import { imageStore } from "../models/image_store.js";
 
 export const dashboardController = {
   index: {
@@ -37,7 +38,16 @@ export const dashboardController = {
         userid: loggedInUser._id,
         name: request.payload.name,
       };
-      await db.categoryStore.addCategory(newCategory);
+      try{
+        await db.categoryStore.addCategory(newCategory);
+      } catch (err) {
+        return h.view("dashboard_view", {
+          title: "Category error",
+          categories: await db.categoryStore.getUserCategories(request.auth.credentials._id),
+          errors: [{ message: "Category already exists" }],
+          admin: request.auth.credentials.role === "admin",
+        });
+      }
       return h.redirect("/dashboard");
     },
   },
@@ -45,7 +55,15 @@ export const dashboardController = {
   deleteCategory: {
     handler: async function (request, h) {
       const category = await db.categoryStore.getCategoryById(request.params.id);
-      await db.categoryStore.deleteCategoryById(category._id);
+      const hike = await db.hikeStore.getHikesByCategoryId(request.params.id);
+      if (hike) {
+        for (let i = 0; i < hike.length; i += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          await imageStore.deleteAllImagesByHike(hike[i]); // delete all images associated with the hike
+        }
+        await db.hikeStore.deleteHikesByCategoryId(category._id); // delete all hikes associated with the category
+      }
+      await db.categoryStore.deleteCategoryById(category._id); // delete the category
       return h.redirect("/dashboard");
     },
   },

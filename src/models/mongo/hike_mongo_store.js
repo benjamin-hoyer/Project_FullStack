@@ -6,8 +6,7 @@ export const hikeMongoStore = {
   },
 
   async getAllPublicHikes() {
-    const hikes = Hike.find({ visibility: "public" }).lean();
-    return hikes;
+    return Hike.find({ visibility: "public" }).lean();
   },
 
   async addHike(categoryId, hike) {
@@ -15,7 +14,9 @@ export const hikeMongoStore = {
     const newHike = new Hike(hike);
     const hikeObj = await newHike.save();
     return this.getHikeById(hikeObj._id);
-  }, async getHikeById(id) {
+  },
+
+  async getHikeById(id) {
     return Hike.findOne({ _id: id }).lean() || null;
   },
 

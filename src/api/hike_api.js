@@ -5,9 +5,25 @@ import { validationError } from "./logger.js";
 import { imageStore } from "../models/image_store.js";
 
 export const hikeApi = {
+
+  getHikesByCategory: {
+    auth: { strategy: "jwt" },
+    handler: async function(request) {
+      try {
+        return await db.hikeStore.getHikesByCategoryId(request.params.id);
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    response: { schema: HikeArraySpec, failAction: validationError },
+    description: "Get all Hikes of Category",
+    notes: "Returns all Hikes of Category",
+  },
+
   find: {
     auth: { strategy: "jwt" },
-    handler: async function(request, h) {
+    handler: async function() {
       try {
         return await db.hikeStore.getAllHikes();
       } catch (err) {
@@ -22,7 +38,7 @@ export const hikeApi = {
 
   findPublic: {
     auth: false,
-    handler: async function(request, h) {
+    handler: async function() {
       try {
         return await db.hikeStore.getAllPublicHikes();
       } catch (err) {
@@ -60,7 +76,8 @@ export const hikeApi = {
     auth: { strategy: "jwt" },
     handler: async function(request, h) {
       try {
-        const hike = await db.hikeStore.addHike(request.params.id, request.payload);
+        const newHike = request.payload;
+        const hike = await db.hikeStore.addHike(request.params.id, newHike );
         if (hike) {
           return h.response(hike).code(201);
         }
@@ -146,13 +163,11 @@ export const hikeApi = {
       const img = request.payload.image;
       const hike = await db.hikeStore.getHikeById(id);
       const hikeIndex = hike.img.indexOf(img);
-      const imgUrl = new URL(img);
-      const publicId = imgUrl.pathname.split("/").pop().split(".")[0];
       if (hikeIndex > -1) {
         hike.img.splice(hikeIndex, 1);
         await db.hikeStore.updateHikeById(id, hike);
         try {
-          await imageStore.deleteAllImages(hike);
+          await imageStore.deleteAllImagesByHike(hike);
           return h.response().code(204);
         } catch (err) {
           return Boom.serverUnavailable("Delete Error");

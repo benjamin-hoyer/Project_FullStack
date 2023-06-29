@@ -34,7 +34,8 @@ export const imageStore = {
       const publicId = imgUrl.pathname.split("/").pop().split(".")[0];
       deleteImg.push(publicId);
       }
-    await cloudinary.v2.api.delete_resources(deleteImg,{} );
+    if (deleteImg.length > 0)
+      await cloudinary.v2.api.delete_resources(deleteImg,{} );
     hike.img = [];
     return hike;
   }

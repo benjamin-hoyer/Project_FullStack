@@ -16,7 +16,7 @@ export const userApi = {
     auth: {
       strategy: "jwt",
     },
-    handler: async function (request, h) {
+    handler: async function () {
       try {
         return await db.userStore.getAllUsers();
       } catch (err) {
@@ -33,7 +33,7 @@ export const userApi = {
     auth: {
       strategy: "jwt",
     },
-    handler: async function (request, h) {
+    handler: async function (request) {
       try {
         const user = await db.userStore.getUserById(request.params.id);
         if (!user) {

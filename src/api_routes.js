@@ -9,6 +9,7 @@ export const apiRoutes = [
   { method: "GET", path: "/api/users/{id}", config: userApi.findOne },
 
   { method: "GET", path: "/api/categories", config: categoryApi.find },
+  { method: "GET", path: "/api/users/{id}/categories", config: categoryApi.findUserCategories },
   { method: "POST", path: "/api/categories", config: categoryApi.create },
   { method: "DELETE", path: "/api/categories", config: categoryApi.deleteAll },
   { method: "GET", path: "/api/categories/{id}", config: categoryApi.findOne },
@@ -18,6 +19,7 @@ export const apiRoutes = [
   { method: "GET", path: "/api/publichikes", config: hikeApi.findPublic },
   { method: "GET", path: "/api/hikes/{id}", config: hikeApi.findOne },
   { method: "POST", path: "/api/categories/{id}/hikes", config: hikeApi.create },
+  { method: "GET", path: "/api/categories/{id}/hikes", config: hikeApi.getHikesByCategory },
   { method: "DELETE", path: "/api/hikes", config: hikeApi.deleteAll },
   { method: "DELETE", path: "/api/hikes/{id}", config: hikeApi.deleteOne },
   { method: "POST", path: "/api/hikes/{id}", config: hikeApi.updateOne },

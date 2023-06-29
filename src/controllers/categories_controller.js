@@ -68,11 +68,14 @@ export const categoriesController = {
     handler: async function (request, h) {
       const { id } = request.params;
       const { hikeid } = request.params;
-      const category = await db.categoryStore.getCategoryById(id);
-      await db.hikeStore.deleteHikeById(hikeid);
+      try {
       const hike = await db.hikeStore.getHikeById(hikeid);
       await imageStore.deleteAllImagesByHike(hike);
-      return h.redirect(`/category/${category._id}`);
+      await db.hikeStore.deleteHikeById(hikeid);}
+      catch (err) {
+          console.log(err);
+        }
+      return h.redirect(`/category/${id}`);
     },
   },
 };

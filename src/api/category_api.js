@@ -24,6 +24,23 @@ export const categoryApi = {
     notes: "Returns all Categories",
   },
 
+  findUserCategories: {
+    auth: {
+      strategy: "jwt",
+    },
+    handler: async function (request, h) {
+      try {
+        return await db.categoryStore.getUserCategories(request.params.id);
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+    }
+  },
+  tags: ["api"],
+  response: { schema: CategoryArraySpec, failAction: validationError },
+  description: "Get all Categories of User",
+  notes: "Returns all Categories of User",
+},
+
   findOne: {
     auth: {
       strategy: "jwt",

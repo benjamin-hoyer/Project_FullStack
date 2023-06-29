@@ -1,4 +1,3 @@
-import { db } from "../models/db.js";
 
 const analyticsPartials = {
   hikesInCategory(hikes) {
