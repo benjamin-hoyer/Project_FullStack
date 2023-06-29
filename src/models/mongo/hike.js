@@ -11,7 +11,10 @@ const HikeSchema = new Schema({
   distance: Number,
   lat: Number,
   long: Number,
+  latend: Number,
+  longend: Number,
   img: [String],
+  visibility: String,
 
   categoryid: {
     type: Schema.Types.ObjectId,

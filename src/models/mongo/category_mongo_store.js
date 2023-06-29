@@ -48,4 +48,12 @@ export const categoryMongoStore = {
     }
     return categories;
   },
+  async deleteAllCategoriesByUserId(id) {
+    const results = [];
+    const categories = await this.getUserCategories(id);
+    for (let i = 0; i < categories.length; i += 1) {
+      results.push( hikeMongoStore.deleteHikesByCategoryId(categories[i]._id));
+    }
+    await Promise.all(results);
+  }
 };

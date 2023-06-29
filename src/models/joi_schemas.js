@@ -32,11 +32,14 @@ export const HikeSpec = Joi.object()
     start: Joi.string().trim().required().example("Regensburg"),
     end: Joi.string().trim().required().example("Nürnberg"),
     description: Joi.string().trim().allow("").optional().example("A lot of lakes along the trail"),
-    duration: Joi.number().allow("").optional().example(450),
-    distance: Joi.number().allow("").optional().example(1200),
-    lat: Joi.number().allow("").required().example(23.42343),
-    long: Joi.number().allow("").required().example(12.5434534),
-    img: Joi.string().allow("").optional().example("https://res.cloudinary.com/image.jpg"),
+    duration: Joi.number().optional().example(450),
+    distance: Joi.number().optional().example(1200),
+    lat: Joi.number().required().example(23.42343),
+    long: Joi.number().required().example(12.5434534),
+    latend: Joi.number().required().example(23.42343),
+    longend: Joi.number().required().example(12.5434534),
+    visibility: Joi.string().required().valid("public", "private").example("public"),
+    img: Joi.array().items(Joi.string().allow("").optional().example("https://res.cloudinary.com/image.jpg"),),
     categoryid: IdSpec,
   })
   .label("Hike");
@@ -70,5 +73,7 @@ export const JwtAuth = Joi.object()
   .keys({
     success: Joi.boolean().example("true").required(),
     token: Joi.string().example("eyJhbGciOiJND.g5YmJisIjoiaGYwNTNjAOhE.gCWGmY5-YigQw0DCBo").required(),
+    _id: IdSpec,
+    role: Joi.string().required().valid("user", "admin").example("user"),
   })
   .label("JwtAuth");

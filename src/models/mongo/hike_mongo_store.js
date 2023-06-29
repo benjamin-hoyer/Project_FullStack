@@ -4,12 +4,18 @@ export const hikeMongoStore = {
   async getAllHikes() {
     return Hike.find().lean();
   },
+
+  async getAllPublicHikes() {
+    return Hike.find({ visibility: "public" }).lean();
+  },
+
   async addHike(categoryId, hike) {
     hike.categoryid = categoryId;
     const newHike = new Hike(hike);
     const hikeObj = await newHike.save();
     return this.getHikeById(hikeObj._id);
   },
+
   async getHikeById(id) {
     return Hike.findOne({ _id: id }).lean() || null;
   },
@@ -40,7 +46,12 @@ export const hikeMongoStore = {
     hikeDoc.distance = updatetHike.distance;
     hikeDoc.lat = updatetHike.lat;
     hikeDoc.long = updatetHike.long;
-    hikeDoc.img = updatetHike.img;
+    hikeDoc.latend = updatetHike.latend;
+    hikeDoc.longend = updatetHike.longend;
+    hikeDoc.visibility = updatetHike.visibility;
+    if (updatetHike.img) {
+      hikeDoc.img = updatetHike.img;
+    }
     await hikeDoc.save();
   },
 };

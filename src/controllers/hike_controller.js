@@ -46,8 +46,23 @@ export const hikeController = {
         distance: request.payload.distance,
         lat: request.payload.lat,
         long: request.payload.long,
+        latend: request.payload.latend,
+        longend: request.payload.longend,
+        visibility: request.payload.visibility,
       };
+      try {
       await db.hikeStore.updateHikeById(hikeid, newHike);
+      } catch (err) {
+        return h
+          .view("hike_view", {
+            title: "Update error",
+            errors: [{ message: "Hike not found" }],
+            category: await db.categoryStore.getCategoryById(request.params.id),
+            hike: await db.hikeStore.getHikeById(request.params.hikeid),
+          })
+          .takeover()
+          .code(400);
+      }
       return h.redirect(`/category/${request.params.id}/hike/${hikeid}`);
     },
   },
@@ -61,6 +76,7 @@ export const hikeController = {
         const file = request.payload.imagefile;
         if (Object.keys(file).length > 0) {
           const url = await imageStore.uploadImage(file);
+          console.log();
           hike.img.push(url);
           await db.hikeStore.updateHikeById(hike._id, hike);
         }
@@ -69,7 +85,7 @@ export const hikeController = {
         console.log(err);
         return h.view("hike_view", {
           title: "Upload error",
-          errors: [{ message: "Error Uploading Images" }],
+          errors: [{ message: "Error Uploading Image" }],
           hike: hike,
           category: await db.categoryStore.getCategoryById(id),
           admin: request.auth.credentials.role === "admin",

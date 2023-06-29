@@ -26,4 +26,18 @@ export const imageStore = {
   deleteImage: async function (img) {
     await cloudinary.v2.uploader.destroy(img, {});
   },
+
+  deleteAllImagesByHike: async function (hike) {
+    const deleteImg = [];
+    for (let i = 0; i < hike.img.length; i+=1) {
+      const imgUrl = new URL(hike.img[i]);
+      const publicId = imgUrl.pathname.split("/").pop().split(".")[0];
+      deleteImg.push(publicId);
+      }
+    if (deleteImg.length > 0)
+      await cloudinary.v2.api.delete_resources(deleteImg,{} );
+    hike.img = [];
+    return hike;
+  }
+
 };

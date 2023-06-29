@@ -10,9 +10,7 @@ import {
 
 export const categoryApi = {
   find: {
-    auth: {
-      strategy: "jwt",
-    },
+    auth: false,
     handler: async function (request, h) {
       try {
         return await db.categoryStore.getAllCategories();
@@ -25,6 +23,23 @@ export const categoryApi = {
     description: "Get all Categories",
     notes: "Returns all Categories",
   },
+
+  findUserCategories: {
+    auth: {
+      strategy: "jwt",
+    },
+    handler: async function (request, h) {
+      try {
+        return await db.categoryStore.getUserCategories(request.params.id);
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+    }
+  },
+  tags: ["api"],
+  response: { schema: CategoryArraySpec, failAction: validationError },
+  description: "Get all Categories of User",
+  notes: "Returns all Categories of User",
+},
 
   findOne: {
     auth: {

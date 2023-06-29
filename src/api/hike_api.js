@@ -5,9 +5,25 @@ import { validationError } from "./logger.js";
 import { imageStore } from "../models/image_store.js";
 
 export const hikeApi = {
+
+  getHikesByCategory: {
+    auth: { strategy: "jwt" },
+    handler: async function(request) {
+      try {
+        return await db.hikeStore.getHikesByCategoryId(request.params.id);
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    response: { schema: HikeArraySpec, failAction: validationError },
+    description: "Get all Hikes of Category",
+    notes: "Returns all Hikes of Category",
+  },
+
   find: {
     auth: { strategy: "jwt" },
-    handler: async function (request, h) {
+    handler: async function() {
       try {
         return await db.hikeStore.getAllHikes();
       } catch (err) {
@@ -18,6 +34,22 @@ export const hikeApi = {
     response: { schema: HikeArraySpec, failAction: validationError },
     description: "Get all hikeApi",
     notes: "Returns all hikeApi",
+  },
+
+  findPublic: {
+    auth: false,
+    handler: async function() {
+      try {
+        return await db.hikeStore.getAllPublicHikes();
+      } catch (err) {
+        console.log(err);
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    response: { schema: HikeArraySpec, failAction: validationError },
+    description: "Get all Public HikesApi",
+    notes: "Returns all Public Hikes",
   },
 
   findOne: {
@@ -42,9 +74,10 @@ export const hikeApi = {
 
   create: {
     auth: { strategy: "jwt" },
-    handler: async function (request, h) {
+    handler: async function(request, h) {
       try {
-        const hike = await db.hikeStore.addHike(request.params.id, request.payload);
+        const newHike = request.payload;
+        const hike = await db.hikeStore.addHike(request.params.id, newHike );
         if (hike) {
           return h.response(hike).code(201);
         }
@@ -62,7 +95,7 @@ export const hikeApi = {
 
   deleteAll: {
     auth: { strategy: "jwt" },
-    handler: async function (request, h) {
+    handler: async function(request, h) {
       try {
         await db.hikeStore.deleteAllHikes();
         return h.response().code(204);
@@ -76,7 +109,7 @@ export const hikeApi = {
 
   deleteOne: {
     auth: { strategy: "jwt" },
-    handler: async function (request, h) {
+    handler: async function(request, h) {
       try {
         const hike = await db.hikeStore.getHikeById(request.params.id);
         if (!hike) {
@@ -95,41 +128,46 @@ export const hikeApi = {
 
   uploadImage: {
     auth: { strategy: "jwt" },
-    handler: async function (request, h) {
+    handler: async function(request, h) {
       const { id } = request.params;
       const hike = await db.hikeStore.getHikeById(id);
       try {
-        const file = request.payload.imagefile;
+        const file = request.payload.image;
         if (Object.keys(file).length > 0) {
           const url = await imageStore.uploadImage(file);
           hike.img.push(url);
           await db.hikeStore.updateHikeById(id, hike);
-          return h.response(hike).code(204);
+          return h.response().code(204);
         }
         return Boom.badImplementation("error uploading image");
       } catch (err) {
+        console.log(err);
         return Boom.serverUnavailable("Upload Error");
       }
     },
     tags: ["api"],
     description: "Upload a hike image",
-    validate: { params: { id: IdSpec, hikeid: IdSpec }, failAction: validationError },
+    validate: { params: { id: IdSpec }, failAction: validationError },
+    payload: {
+      multipart: true,
+      output: "data",
+      maxBytes: 209715200,
+      parse: true,
+    },
   },
 
   deleteImage: {
     auth: { strategy: "jwt" },
-    handler: async function (request, h) {
+    handler: async function(request, h) {
       const { id } = request.params;
       const img = request.payload.image;
       const hike = await db.hikeStore.getHikeById(id);
       const hikeIndex = hike.img.indexOf(img);
-      const imgUrl = new URL(img);
-      const publicId = imgUrl.pathname.split("/").pop().split(".")[0];
       if (hikeIndex > -1) {
         hike.img.splice(hikeIndex, 1);
         await db.hikeStore.updateHikeById(id, hike);
         try {
-          await imageStore.deleteImage(publicId);
+          await imageStore.deleteAllImagesByHike(hike);
           return h.response().code(204);
         } catch (err) {
           return Boom.serverUnavailable("Delete Error");
@@ -139,6 +177,30 @@ export const hikeApi = {
     },
     tags: ["api"],
     description: "Delete a hike image",
-    validate: { params: { id: IdSpec, hikeid: IdSpec }, failAction: validationError },
+    validate: { params: { id: IdSpec }, failAction: validationError },
   },
+
+  updateOne: {
+    auth: { strategy: "jwt" },
+    handler: async function(request, h) {
+      const { id } = request.params;
+      try {
+        const hike = await db.hikeStore.getHikeById(id);
+        if (!hike) {
+          return Boom.notFound("No Hike with this id");
+        }
+        const hikeUpdate = request.payload;
+        await db.hikeStore.updateHikeById(id, hikeUpdate);
+        return h.response().code(204);
+      } catch (err) {
+        console.log(err);
+        return Boom.serverUnavailable("Update Error");
+      }
+    },
+    tags: ["api"],
+    description: "Update a hike",
+    validate: { params: { id: IdSpec }, payload: HikeSpecPlus, failAction: validationError },
+  },
+
+
 };
