@@ -1,5 +1,6 @@
 import { Category } from "./category.js";
 import { hikeMongoStore } from "./hike_mongo_store.js";
+import { imageStore } from "../image_store.js";
 
 export const categoryMongoStore = {
   async getAllCategories() {
@@ -52,6 +53,16 @@ export const categoryMongoStore = {
     const results = [];
     const categories = await this.getUserCategories(id);
     for (let i = 0; i < categories.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const hike = await hikeMongoStore.getHikesByCategoryId(categories[i].id);
+      if (hike) {
+        for (let j = 0; i < hike.length; j += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          await imageStore.deleteAllImagesByHike(hike[j]); // delete all images associated with the hike
+        }
+        // eslint-disable-next-line no-await-in-loop
+        await hikeMongoStore.deleteHikesByCategoryId(categories[i]._id); // delete all hikes associated with the category
+      }
       results.push( hikeMongoStore.deleteHikesByCategoryId(categories[i]._id));
     }
     await Promise.all(results);
