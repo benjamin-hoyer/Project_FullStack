@@ -33,7 +33,7 @@ export const adminController = {
       }
       const userId = request.params.id;
       await db.userStore.deleteUserById(userId);
-      await db.categoryStore.deleteAllCategoriesByUserId(userId);
+      // admin can delete categories manually, if he wants to
       return h.redirect("/admin");
     },
   },
